@@ -1,25 +1,15 @@
 local Path = require("plenary.path")
 
-local AUGROUP = "mru__group"
-
-local Mru = function(store)
+local Mru = function(store, listener)
   local self = {}
 
   self.setup = function()
-    local group = vim.api.nvim_create_augroup(AUGROUP, { clear = true })
-
-    vim.api.nvim_create_autocmd("BufRead", {
-      pattern = "*",
-      callback = function()
-        local file = vim.fn.expand("<afile>:p")
-        store.add(file)
-      end,
-      group = group,
-    })
+    listener.on_change(store.add)
+    listener.setup()
   end
 
   self.cleanup = function()
-    vim.api.nvim_del_augroup_by_name(AUGROUP)
+    listener.cleanup()
   end
 
   self.get = function()

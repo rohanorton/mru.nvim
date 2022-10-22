@@ -1,6 +1,9 @@
 local Store = require("mru.store")
+local Listener = require("mru.listener")
 local Mru = require("mru.mru")
 local NullMru = require("mru.null_mru")
+
+local AUGROUP = "mru__group"
 
 local M = {}
 
@@ -8,7 +11,8 @@ local instance = NullMru()
 
 M.setup = function()
   local store = Store()
-  instance = Mru(store)
+  local listener = Listener(AUGROUP)
+  instance = Mru(store, listener)
   instance.setup()
 end
 
