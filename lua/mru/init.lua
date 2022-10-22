@@ -18,6 +18,7 @@ end
 
 M.cleanup = function()
   instance.cleanup()
+  instance = NullMru()
 end
 
 M.get = function()
