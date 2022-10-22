@@ -61,6 +61,8 @@ describe("MRU", function()
         test_dir .. "/test_file_3",
         test_dir .. "/test_file_2",
       }, mru.list_absolute(), "List Absolute should return absolute file paths")
+
+      assert.same(test_dir .. "/test_file_1", mru.get_absolute(), "Get Absolute should return absolute path")
     end)
   end)
 end)
