@@ -4,14 +4,28 @@ local AUGROUP = "mru__group"
 
 local store
 
+local function remove_duplicates(xs)
+  local res = {}
+  local seen = {}
+  for _, value in ipairs(xs) do
+    if not seen[value] then
+      table.insert(res, value)
+    end
+    seen[value] = true
+  end
+  return res
+end
+
 M.setup = function()
+  store = {}
+
   local group = vim.api.nvim_create_augroup(AUGROUP, { clear = true })
 
   vim.api.nvim_create_autocmd("BufRead", {
     pattern = "*",
     callback = function()
       local file = vim.fn.expand("<afile>")
-      store = file
+      table.insert(store, 1, file)
     end,
     group = group,
   })
@@ -22,7 +36,11 @@ M.cleanup = function()
 end
 
 M.get = function()
-  return store
+  return store[1]
+end
+
+M.list = function()
+  return remove_duplicates(store)
 end
 
 return M
