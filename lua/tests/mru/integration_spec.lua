@@ -37,6 +37,8 @@ describe("MRU", function()
     end)
 
     it("retrieves most recently used file", function()
+      assert.same(nil, mru.list(), "Calling list without calling setup should return nothing")
+
       mru.setup({
         mru_file = mru_file,
       })
