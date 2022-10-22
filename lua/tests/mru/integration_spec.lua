@@ -1,7 +1,13 @@
 local mru = require("mru")
+local f = string.format
 
 local function trim(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
+local function mktemp(suffix)
+  local res = vim.fn.system(f('mktemp -d --suffix="__%s"', suffix))
+  return vim.fn.resolve(trim(res))
 end
 
 describe("MRU", function()
@@ -11,7 +17,7 @@ describe("MRU", function()
     before_each(function()
       original_dir = vim.fn.getcwd()
       -- Create tmp dir
-      test_dir = trim(vim.fn.system('mktemp -d --suffix="--mru.nvim"'))
+      test_dir = mktemp("mru.nvim")
       -- Make working dir?
       vim.api.nvim_set_current_dir(test_dir)
       -- Create some files
@@ -49,6 +55,12 @@ describe("MRU", function()
         "test_file_3",
         "test_file_2",
       }, mru.list(), "List files should return files in correct order")
+
+      assert.same({
+        test_dir .. "/test_file_1",
+        test_dir .. "/test_file_3",
+        test_dir .. "/test_file_2",
+      }, mru.list_absolute(), "List Absolute should return absolute file paths")
     end)
   end)
 end)
