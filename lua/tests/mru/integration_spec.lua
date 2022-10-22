@@ -40,6 +40,9 @@ describe("MRU", function()
       vim.cmd("edit test_file_3 | bdelete")
 
       assert.same("test_file_3", mru.get())
+
+      vim.cmd("edit test_file_1 | bdelete")
+      assert.same("test_file_1", mru.get())
     end)
   end)
 end)
