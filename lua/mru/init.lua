@@ -30,6 +30,10 @@ M.get = function()
   return Path.new(store.get()):make_relative()
 end
 
+M.get_absolute = function()
+  return store.get()
+end
+
 M.list = function()
   local s = store.list()
   local res = {}
