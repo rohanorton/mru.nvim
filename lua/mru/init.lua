@@ -1,50 +1,35 @@
 local Store = require("mru.store")
-local Path = require("plenary.path")
+local Mru = require("mru.mru")
+local NullMru = require("mru.null_mru")
 
 local M = {}
 
-local AUGROUP = "mru__group"
-
-local store
+local instance = NullMru()
 
 M.setup = function()
-  store = Store()
-
-  local group = vim.api.nvim_create_augroup(AUGROUP, { clear = true })
-
-  vim.api.nvim_create_autocmd("BufRead", {
-    pattern = "*",
-    callback = function()
-      local file = vim.fn.expand("<afile>:p")
-      store.add(file)
-    end,
-    group = group,
-  })
+  local store = Store()
+  instance = Mru(store)
+  instance.setup()
 end
 
 M.cleanup = function()
-  vim.api.nvim_del_augroup_by_name(AUGROUP)
+  instance.cleanup()
 end
 
 M.get = function()
-  return Path.new(store.get()):make_relative()
+  return instance.get()
 end
 
 M.get_absolute = function()
-  return store.get()
+  return instance.get_absolute()
 end
 
 M.list = function()
-  local s = store.list()
-  local res = {}
-  for i, filepath in ipairs(s) do
-    res[i] = Path:new(filepath):make_relative()
-  end
-  return res
+  return instance.list()
 end
 
 M.list_absolute = function()
-  return store.list()
+  return instance.list_absolute()
 end
 
 return M
