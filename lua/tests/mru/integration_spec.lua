@@ -39,10 +39,19 @@ describe("MRU", function()
       vim.cmd("edit test_file_2 | bdelete")
       vim.cmd("edit test_file_3 | bdelete")
 
+      -- Get MRU File
       assert.same("test_file_3", mru.get())
 
       vim.cmd("edit test_file_1 | bdelete")
       assert.same("test_file_1", mru.get())
+
+      -- List Files in Order
+
+      assert.same({
+        "test_file_1",
+        "test_file_3",
+        "test_file_2",
+      }, mru.list())
     end)
   end)
 end)
