@@ -4,6 +4,7 @@ local Mru = function(store, listener)
   local self = {}
 
   self.setup = function()
+    store.setup()
     listener.on_change(store.add)
     listener.setup()
   end

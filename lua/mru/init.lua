@@ -9,8 +9,8 @@ local M = {}
 
 local instance = NullMru()
 
-M.setup = function()
-  local store = Store()
+M.setup = function(opts)
+  local store = Store(opts.mru_file)
   local listener = FileListener(AUGROUP)
   instance = Mru(store, listener)
   instance.setup()
