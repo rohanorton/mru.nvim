@@ -1,5 +1,5 @@
 local Store = require("mru.store")
-local Listener = require("mru.listener")
+local FileListener = require("mru.file_listener")
 local Mru = require("mru.mru")
 local NullMru = require("mru.null_mru")
 
@@ -11,7 +11,7 @@ local instance = NullMru()
 
 M.setup = function()
   local store = Store()
-  local listener = Listener(AUGROUP)
+  local listener = FileListener(AUGROUP)
   instance = Mru(store, listener)
   instance.setup()
 end
