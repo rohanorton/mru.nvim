@@ -13,12 +13,12 @@ local Mru = function(store, listener)
     listener.cleanup()
   end
 
-  self.get = function()
-    return Path.new(store.get()):make_relative()
+  self.get = function(opts)
+    return Path.new(store.get(opts)):make_relative()
   end
 
-  self.get_absolute = function()
-    return store.get()
+  self.get_absolute = function(opts)
+    return store.get(opts)
   end
 
   self.list = function()

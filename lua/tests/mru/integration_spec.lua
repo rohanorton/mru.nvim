@@ -70,6 +70,8 @@ describe("MRU", function()
       assert.same("test_file_1", mru.get(), "Should not get the file that is open.")
       vim.cmd("bdelete")
       assert.same("test_file_2", mru.get(), "Once the file closes, it should be listed")
+
+      assert.same("test_file_1", mru.get({ offset = 1 }), "Should be able to receive an offset")
     end)
   end)
 end)

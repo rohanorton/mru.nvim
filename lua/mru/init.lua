@@ -19,12 +19,12 @@ M.cleanup = function()
   instance = NullMru()
 end
 
-M.get = function()
-  return instance.get()
+M.get = function(opts)
+  return instance.get(opts)
 end
 
-M.get_absolute = function()
-  return instance.get_absolute()
+M.get_absolute = function(opts)
+  return instance.get_absolute(opts)
 end
 
 M.list = function()
