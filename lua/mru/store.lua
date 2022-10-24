@@ -49,9 +49,12 @@ local Store = function(db_filename)
 
   self.add = function(filepath)
     local res = db:eval(
-      [[
-      INSERT INTO files 
+      string.format(
+        [[
+
+      INSERT INTO %s
           (filepath)   
+
       VALUES
           (:filepath)   
 
@@ -59,7 +62,10 @@ local Store = function(db_filename)
           SET count = count + 1 
 
       RETURNING id;
+
     ]],
+        FILES_TBL
+      ),
       { filepath = filepath }
     )
     db:insert(VIEWS_TBL, { file_id = res[1].id, timestamp = create_timestamp() })
@@ -69,27 +75,31 @@ local Store = function(db_filename)
     opts = vim.tbl_deep_extend("keep", opts or {}, { limit = 100, offset = 0 })
 
     local rows = db:eval(
-      [[
+      string.format(
+        [[
 
     SELECT
-        f.filepath, MAX(v.timestamp)
+        files.filepath, MAX(views.timestamp)
 
     FROM
-        files f
+        %s files
 
     INNER JOIN
-        views v
-            ON f.id = v.file_id 
+        %s views
+            ON files.id = views.file_id 
 
-    GROUP BY f.filepath
+    GROUP BY files.filepath
 
 
     ORDER BY
-        v.timestamp DESC
+        views.timestamp DESC
 
-    LIMIT :limit OFFSET :offset
+    LIMIT :limit OFFSET :offset;
 
     ]],
+        FILES_TBL,
+        VIEWS_TBL
+      ),
       {
         limit = tostring(opts.limit),
         offset = tostring(opts.offset),
