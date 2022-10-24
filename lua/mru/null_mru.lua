@@ -22,19 +22,19 @@ local NullMru = function(notify)
     inform_cleanup_not_necessary()
   end
 
-  self.get = function()
+  self.get = function(_)
     warn_not_running()
   end
 
-  self.get_absolute = function()
+  self.get_absolute = function(_)
     warn_not_running()
   end
 
-  self.list = function()
+  self.list = function(_)
     warn_not_running()
   end
 
-  self.list_absolute = function()
+  self.list_absolute = function(_)
     warn_not_running()
   end
 
