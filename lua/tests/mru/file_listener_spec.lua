@@ -84,14 +84,14 @@ describe("Listener", function()
       uut.setup()
 
       -- Open same file in buffer
-      vim.cmd("e test_file_1")
-      vim.cmd("e test_file_1")
-      vim.cmd("e test_file_1")
+      vim.cmd("e test_file_1 | bdelete")
+      vim.cmd("e test_file_1 | bdelete")
+      vim.cmd("e test_file_1 | bdelete")
 
       assert.spy(handler).was.called(1)
     end)
 
-    it("triggers on file enter", function()
+    it("triggers on file leave", function()
       local handler = spy.new(function(arg) end)
 
       uut.on_change(handler)
@@ -104,7 +104,10 @@ describe("Listener", function()
       vim.cmd("e test_file_2")
       -- Navigate back to first buffer
       vim.cmd("e test_file_1")
+      -- Navigate back to second buffer
+      vim.cmd("e test_file_2")
 
+      -- Currently in the second buffer, have not left
       assert.spy(handler).was.called(3)
     end)
 

@@ -65,6 +65,11 @@ describe("MRU", function()
       }, mru.list_absolute(), "List Absolute should return absolute file paths")
 
       assert.same(test_dir .. "/test_file_1", mru.get_absolute(), "Get Absolute should return absolute path")
+
+      vim.cmd("edit test_file_2")
+      assert.same("test_file_1", mru.get(), "Should not get the file that is open.")
+      vim.cmd("bdelete")
+      assert.same("test_file_2", mru.get(), "Once the file closes, it should be listed")
     end)
   end)
 end)

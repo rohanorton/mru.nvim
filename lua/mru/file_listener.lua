@@ -28,7 +28,7 @@ local FileListener = function(group_name)
 
   self.setup = function()
     local group = vim.api.nvim_create_augroup(group_name, { clear = true })
-    local events = { "BufRead", "BufWritePost", "BufEnter" }
+    local events = { "BufLeave", "BufWritePost" }
     vim.api.nvim_create_autocmd(events, { pattern = "*", callback = autocmd_callback, group = group })
   end
 

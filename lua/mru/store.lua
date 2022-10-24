@@ -30,6 +30,10 @@ local Store = function(db_filename)
       return
     end
 
+    if db:exists(FILES_TBL) and db:exists(VIEWS_TBL) then
+      return
+    end
+
     db:create(FILES_TBL, {
       id = true,
       filepath = { type = "text", unique = true, required = true },
