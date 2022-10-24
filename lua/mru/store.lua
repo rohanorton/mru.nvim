@@ -88,6 +88,7 @@ local Store = function(db_filename)
         v.timestamp DESC
 
     LIMIT :limit OFFSET :offset
+
     ]],
       {
         limit = tostring(opts.limit),
@@ -99,35 +100,8 @@ local Store = function(db_filename)
   end
 
   self.get = function(opts)
-    opts = vim.tbl_deep_extend("keep", opts or {}, { offset = 0 })
-
-    local rows = db:eval(
-      [[
-
-    SELECT
-        f.filepath, MAX(v.timestamp)
-
-    FROM
-        files f
-
-    INNER JOIN
-        views v
-            ON f.id = v.file_id 
-
-    GROUP BY f.filepath
-
-
-    ORDER BY
-        v.timestamp DESC
-
-    LIMIT 1 OFFSET :offset
-    ]],
-      {
-        offset = tostring(opts.offset),
-      }
-    )
-
-    return rows[1].filepath
+    opts = vim.tbl_deep_extend("force", opts or {}, { limit = 1 })
+    return self.list(opts)[1]
   end
 
   return self
