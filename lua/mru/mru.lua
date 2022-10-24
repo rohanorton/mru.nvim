@@ -21,8 +21,8 @@ local Mru = function(store, listener)
     return store.get(opts)
   end
 
-  self.list = function()
-    local s = store.list()
+  self.list = function(opts)
+    local s = store.list(opts)
     local res = {}
     for i, filepath in ipairs(s) do
       res[i] = Path:new(filepath):make_relative()
@@ -30,8 +30,8 @@ local Mru = function(store, listener)
     return res
   end
 
-  self.list_absolute = function()
-    return store.list()
+  self.list_absolute = function(opts)
+    return store.list(opts)
   end
 
   return self

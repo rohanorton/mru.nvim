@@ -65,8 +65,12 @@ local Store = function(db_filename)
     db:insert(VIEWS_TBL, { file_id = res[1].id, timestamp = create_timestamp() })
   end
 
-  self.list = function()
-    local rows = db:eval([[
+  self.list = function(opts)
+    opts = vim.tbl_deep_extend("keep", opts or {}, { limit = 100, offset = 0 })
+
+    local rows = db:eval(
+      [[
+
     SELECT
         f.filepath, MAX(v.timestamp)
 
@@ -79,10 +83,17 @@ local Store = function(db_filename)
 
     GROUP BY f.filepath
 
+
     ORDER BY
         v.timestamp DESC
 
-    ]])
+    LIMIT :limit OFFSET :offset
+    ]],
+      {
+        limit = tostring(opts.limit),
+        offset = tostring(opts.offset),
+      }
+    )
 
     return pluck("filepath", rows)
   end

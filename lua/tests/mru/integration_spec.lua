@@ -72,6 +72,11 @@ describe("MRU", function()
       assert.same("test_file_2", mru.get(), "Once the file closes, it should be listed")
 
       assert.same("test_file_1", mru.get({ offset = 1 }), "Should be able to receive an offset")
+
+      assert.same({
+        "test_file_2",
+        "test_file_1",
+      }, mru.list({ limit = 2 }), "Should be able to pass in limit to list")
     end)
   end)
 end)

@@ -27,12 +27,12 @@ M.get_absolute = function(opts)
   return instance.get_absolute(opts)
 end
 
-M.list = function()
-  return instance.list()
+M.list = function(opts)
+  return instance.list(opts)
 end
 
-M.list_absolute = function()
-  return instance.list_absolute()
+M.list_absolute = function(opts)
+  return instance.list_absolute(opts)
 end
 
 return M
