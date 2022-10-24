@@ -1,14 +1,8 @@
-local has_sqlite, sqlite = pcall(require, "sqlite")
-if not has_sqlite then
-  error("This plugin requires sqlite.lua (https://github.com/tami5/sqlite.lua) " .. tostring(sqlite))
-end
-
 local FILES_TBL = "files"
 local VIEWS_TBL = "views"
 
-local Store = function(db_filename)
+local Store = function(db)
   local self = {}
-  local db
 
   local pluck = function(key, xs)
     local res = {}
@@ -23,13 +17,6 @@ local Store = function(db_filename)
   end
 
   self.setup = function()
-    db = sqlite:open(db_filename)
-
-    if not db then
-      vim.notify("MRU could not open database", vim.log.levels.ERROR)
-      return
-    end
-
     if db:exists(FILES_TBL) and db:exists(VIEWS_TBL) then
       return
     end
