@@ -12,7 +12,7 @@ end
 
 describe("MRU", function()
   describe("stores ", function()
-    local test_dir, mru_file, original_dir
+    local test_dir, database_filepath, original_dir
 
     before_each(function()
       original_dir = vim.fn.getcwd()
@@ -24,8 +24,8 @@ describe("MRU", function()
       vim.fn.system("touch test_file_1")
       vim.fn.system("touch test_file_2")
       vim.fn.system("touch test_file_3")
-      -- Set mru_file variable
-      mru_file = test_dir .. "/.mru"
+      -- Set db filepath variable
+      database_filepath = test_dir .. "/.mru"
     end)
 
     after_each(function()
@@ -40,7 +40,7 @@ describe("MRU", function()
       assert.same(nil, mru.list(), "Calling list without calling setup should return nothing")
 
       mru.setup({
-        mru_file = mru_file,
+        database_filepath = database_filepath,
       })
 
       vim.cmd("edit test_file_1 | bdelete")
